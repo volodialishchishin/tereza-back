@@ -133,6 +133,7 @@ export class AuthService {
     const tokenFromDb = await this.sessionRepository.findOne({
       where: { refresh_token: refreshToken },
     });
+    console.log(userData, tokenFromDb);
     if (!userData || !tokenFromDb) {
       throw new Error();
     }
@@ -144,6 +145,7 @@ export class AuthService {
     return { ...tokens };
   }
   async validateRefreshToken(refreshToken: string) {
+    console.log(refreshToken);
     try {
       const { user, deviceId } = await this.jwtService.verifyAsync(
         refreshToken,
@@ -154,6 +156,7 @@ export class AuthService {
         deviceId,
       };
     } catch (e) {
+      console.log(e);
       return null;
     }
   }

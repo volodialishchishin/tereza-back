@@ -165,9 +165,10 @@ export class AuthController {
   //   }
   // }
 
-  @UseGuards(ThrottlerGuard)
   @Post('refresh-token')
   async refreshToken(@Req() req, @Res() response: Response) {
+    console.log('ref');
+    console.log(req.cookies);
     try {
       const { refreshToken } = req.cookies;
       let tokens;
@@ -178,6 +179,7 @@ export class AuthController {
           req.ip,
         );
       }
+      console.log('zdarova', tokens);
       if (tokens) {
         response.cookie('refreshToken', tokens.refreshToken, {
           secure: true,
@@ -186,6 +188,7 @@ export class AuthController {
         return response.status(200).json({ accessToken: tokens.accessToken });
       }
     } catch (e) {
+      console.log(e);
       response.sendStatus(401);
     }
   }

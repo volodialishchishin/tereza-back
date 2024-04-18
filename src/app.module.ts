@@ -10,12 +10,20 @@ import { UserRoleEntity } from './DB/Entities/user.role.entity';
 import { UserSettingsEntity } from './DB/Entities/user.settings.entity';
 import { SessionEntity } from './DB/Entities/session.entity';
 import { UserModule } from './User/user.module';
+import { RoadModule } from './road/road.module';
+import { RoadEntity } from './DB/Entities/road.entity';
+import { ChatModule } from './chat/chat.module';
+import { RideModule } from './ride/ride.module';
+import { RideEntity } from './DB/Entities/ride.entity';
+import { MessageEntity } from './DB/Entities/message.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     AuthModule,
     UserModule,
+    RoadModule,
+    ChatModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -32,10 +40,16 @@ import { UserModule } from './User/user.module';
           UserRoleEntity,
           UserSettingsEntity,
           SessionEntity,
+          RoadEntity,
+          RideEntity,
+          MessageEntity,
         ],
       }),
       inject: [ConfigService],
     }),
+    RoadModule,
+    ChatModule,
+    RideModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],

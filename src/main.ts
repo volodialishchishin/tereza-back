@@ -8,8 +8,8 @@ import { HttpExceptionFilter } from './Filters/exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
+  app.enableCors({ credentials: true, origin: 'http://localhost:5173' });
   app.use(cookieParser());
-  app.enableCors();
   app.useGlobalPipes(
     new ValidationPipe({
       stopAtFirstError: true,

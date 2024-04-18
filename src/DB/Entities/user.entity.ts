@@ -8,6 +8,7 @@ import {
 import { UserRoleEntity } from './user.role.entity';
 import { SessionEntity } from './session.entity';
 import { UserSettingsEntity } from './user.settings.entity';
+import { RoadEntity } from './road.entity';
 
 @Entity()
 export class UserEntity {
@@ -45,11 +46,14 @@ export class UserEntity {
   created_at: string;
 
   @OneToMany(() => UserRoleEntity, (role) => role.user)
-  roles: UserRoleEntity;
+  roles: UserRoleEntity[];
+
+  @OneToMany(() => RoadEntity, (role) => role.user)
+  roads: RoadEntity[];
 
   @OneToMany(() => SessionEntity, (role) => role.user)
-  sessions: SessionEntity;
+  sessions: SessionEntity[];
 
   @OneToMany(() => UserSettingsEntity, (role) => role.user)
-  settings: SessionEntity;
+  settings: UserSettingsEntity[];
 }

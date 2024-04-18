@@ -6,9 +6,9 @@ import { UserEntity } from '../DB/Entities/user.entity';
 import { UserRoleEntity } from '../DB/Entities/user.role.entity';
 import { UserSettingsEntity } from '../DB/Entities/user.settings.entity';
 import { AuthController } from './auth.controller';
-import { JwtService } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { SessionEntity } from '../DB/Entities/session.entity';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserService } from '../User/user.service';
 import { JwtStrategy } from './Strategy/jwt.strategy';
 import { UserModel } from '../User/Model/user.model';
@@ -29,6 +29,14 @@ import { UserModel } from '../User/Model/user.model';
       UserSettingsEntity,
       SessionEntity,
     ]),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get('SECRET'),
+        signOptions: { expiresIn: '100m' },
+      }),
+    }),
   ],
   controllers: [AuthController],
   providers: [
