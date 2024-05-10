@@ -12,6 +12,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserService } from '../User/user.service';
 import { JwtStrategy } from './Strategy/jwt.strategy';
 import { UserModel } from '../User/Model/user.model';
+import { SubscriptionsEntity } from '../DB/Entities/subscriptionsEntity';
+import { NotificationsEntity } from '../DB/Entities/notifications.entity';
+import { ChatEntity } from '../DB/Entities/chat.entity';
 
 @Module({
   imports: [
@@ -28,6 +31,9 @@ import { UserModel } from '../User/Model/user.model';
       UserRoleEntity,
       UserSettingsEntity,
       SessionEntity,
+      SubscriptionsEntity,
+      NotificationsEntity,
+      ChatEntity,
     ]),
     JwtModule.registerAsync({
       imports: [ConfigModule],

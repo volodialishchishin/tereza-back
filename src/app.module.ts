@@ -16,6 +16,15 @@ import { ChatModule } from './chat/chat.module';
 import { RideModule } from './ride/ride.module';
 import { RideEntity } from './DB/Entities/ride.entity';
 import { MessageEntity } from './DB/Entities/message.entity';
+import { ChatEntity } from './DB/Entities/chat.entity';
+import { SubscriptionsEntity } from './DB/Entities/subscriptionsEntity';
+import { UserEntityRide } from './DB/Entities/user.entity.ride';
+import { NotificationsEntity } from './DB/Entities/notifications.entity';
+import { NotificationsModule } from './notifications/notifications.module';
+import { ArticlesModule } from './articles/articles.module';
+import { ArticleEntity } from './DB/Entities/article.entity';
+import { CommentsModule } from './comments/comments.module';
+import { CommentEntity } from './DB/Entities/comment.entity';
 
 @Module({
   imports: [
@@ -24,15 +33,16 @@ import { MessageEntity } from './DB/Entities/message.entity';
     UserModule,
     RoadModule,
     ChatModule,
+    NotificationsModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
         port: 5432,
-        host: configService.get('DB_HOST'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_DATABASE'),
+        host: configService.get('PGHOST'),
+        username: configService.get('PGUSER'),
+        password: configService.get('PGPASSWORD'),
+        database: configService.get('PGDATABASE'),
         synchronize: true,
         ssl: true,
         entities: [
@@ -43,6 +53,12 @@ import { MessageEntity } from './DB/Entities/message.entity';
           RoadEntity,
           RideEntity,
           MessageEntity,
+          SubscriptionsEntity,
+          UserEntityRide,
+          NotificationsEntity,
+          ArticleEntity,
+          CommentEntity,
+          ChatEntity,
         ],
       }),
       inject: [ConfigService],
@@ -50,6 +66,9 @@ import { MessageEntity } from './DB/Entities/message.entity';
     RoadModule,
     ChatModule,
     RideModule,
+    NotificationsModule,
+    ArticlesModule,
+    CommentsModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],

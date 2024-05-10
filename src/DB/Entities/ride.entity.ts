@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 import { RoadEntity } from './road.entity';
 @Entity()
 export class RideEntity {
@@ -16,6 +22,10 @@ export class RideEntity {
 
   @Column({ type: 'varchar' })
   description: string;
+  @CreateDateColumn({ type: 'varchar', nullable: true })
+  createdat: string;
+  @Column({ type: 'varchar', nullable: true })
+  date: string;
 
   @ManyToOne(() => RoadEntity, (road) => road.rides)
   road: RoadEntity;

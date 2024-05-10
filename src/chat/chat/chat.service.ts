@@ -3,44 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MessageEntity } from '../../DB/Entities/message.entity';
 import { UserEntity } from '../../DB/Entities/user.entity';
+import { ChatEntity } from '../../DB/Entities/chat.entity';
 
 @Injectable()
 export class ChatService {
   constructor(
     @InjectRepository(MessageEntity)
     private messageEntityRepository: Repository<MessageEntity>,
-    @InjectRepository(UserEntity)
-    private userEntityRepository: Repository<UserEntity>,
+    @InjectRepository(ChatEntity)
+    private chatEntityRepository: Repository<ChatEntity>,
   ) {}
   private users = [];
 
-  addUser({ name, room }) {
-    const isExist = this.users.some(
-      (user) => user.name === name && user.room === room,
-    );
-    let user = this.users.find(
-      (user) => user.name === name && user.room === room,
-    );
-    if (!user) {
-      user = { id: Math.random().toString(), name, room };
-      this.users.push(user);
-    }
-    return { user, isExist };
-  }
-
-  findUser(params) {
-    return this.users.find((user) => user.name === params.name);
-  }
-
   getRoomUsers(room) {
     return this.users.filter((user) => user.room === room);
-  }
-
-  removeUser(params) {
-    const index = this.users.findIndex((user) => user.id === params.userId);
-    if (index !== -1) {
-      return this.users.splice(index, 1)[0];
-    }
   }
 
   async getMessages(room) {
@@ -49,7 +25,7 @@ export class ChatService {
     });
     return messages.map((e) => {
       return {
-        user: { name: e.name },
+        user: e.name,
         message: e.message,
       };
     });
@@ -62,5 +38,25 @@ export class ChatService {
       ride_id: room,
     });
     return this.messageEntityRepository.save(savedMessage);
+  }
+
+  async checkRoomId(userId: string, room: string) {
+    const result = this.chatEntityRepository.findOne({
+      where: [
+        { user_id1: userId, user_id2: room },
+        { user_id1: room, user_id2: userId },
+      ],
+    });
+    return result;
+  }
+
+  async saveId(userId: string, room: string, id: string) {
+    const result = this.chatEntityRepository.create({
+      user_id1: userId,
+      user_id2: room,
+      room_id: id,
+    });
+    await this.chatEntityRepository.save(result);
+    return result;
   }
 }

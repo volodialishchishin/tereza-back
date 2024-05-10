@@ -11,6 +11,8 @@ export class UserModel {
       city: user?.city,
       username: user.username,
       avatar: user?.avatar,
+      // @ts-expect-error-ignore
+      isSubscribed: user.isSubscribed || false,
     };
   }
 }

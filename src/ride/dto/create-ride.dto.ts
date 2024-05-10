@@ -1,6 +1,7 @@
 export class CreateRideDto {
   description: string;
   title: string;
-  userCount: number;
+  usersCount: number;
   roadId: string;
+  date: string;
 }

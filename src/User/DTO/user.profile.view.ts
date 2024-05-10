@@ -6,4 +6,5 @@ export type UserProfileView = {
   city: string;
   username: string;
   avatar: string;
+  isSubscribed: boolean | null;
 };

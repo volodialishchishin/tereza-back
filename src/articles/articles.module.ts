@@ -1,18 +1,25 @@
 import { Module } from '@nestjs/common';
+import { ArticlesService } from './articles.service';
+import { ArticlesController } from './articles.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../DB/Entities/user.entity';
-import { UserService } from '../User/user.service';
-import { UserController } from './user.controller';
-import { UserModel } from './Model/user.model';
+import { NotificationsEntity } from '../DB/Entities/notifications.entity';
+import { SubscriptionsEntity } from '../DB/Entities/subscriptionsEntity';
 import { MulterModule } from '@nestjs/platform-express';
-import { FileService } from './file.service';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { SubscriptionsEntity } from '../DB/Entities/subscriptionsEntity';
-import { ChatEntity } from '../DB/Entities/chat.entity';
+import { FileService } from '../User/file.service';
+import { ArticleEntity } from '../DB/Entities/article.entity';
+
 @Module({
+  controllers: [ArticlesController],
   imports: [
-    TypeOrmModule.forFeature([UserEntity, SubscriptionsEntity, ChatEntity]),
+    TypeOrmModule.forFeature([
+      UserEntity,
+      NotificationsEntity,
+      SubscriptionsEntity,
+      ArticleEntity,
+    ]),
     MulterModule.register({
       storage: diskStorage({
         destination: './uploads',
@@ -32,8 +39,6 @@ import { ChatEntity } from '../DB/Entities/chat.entity';
       },
     }),
   ],
-  controllers: [UserController],
-  providers: [UserService, UserModel, FileService],
-  exports: [UserService, UserModel],
+  providers: [ArticlesService, FileService],
 })
-export class UserModule {}
+export class ArticlesModule {}

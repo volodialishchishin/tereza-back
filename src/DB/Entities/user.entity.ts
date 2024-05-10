@@ -9,6 +9,8 @@ import { UserRoleEntity } from './user.role.entity';
 import { SessionEntity } from './session.entity';
 import { UserSettingsEntity } from './user.settings.entity';
 import { RoadEntity } from './road.entity';
+import { ArticleEntity } from './article.entity';
+import { CommentEntity } from './comment.entity';
 
 @Entity()
 export class UserEntity {
@@ -42,8 +44,8 @@ export class UserEntity {
   @Column({ type: 'varchar', nullable: true })
   avatar: string;
 
-  @CreateDateColumn({ type: 'varchar' })
-  created_at: string;
+  @CreateDateColumn({ type: 'varchar', nullable: true })
+  createdat: string;
 
   @OneToMany(() => UserRoleEntity, (role) => role.user)
   roles: UserRoleEntity[];
@@ -56,4 +58,10 @@ export class UserEntity {
 
   @OneToMany(() => UserSettingsEntity, (role) => role.user)
   settings: UserSettingsEntity[];
+
+  @OneToMany(() => ArticleEntity, (article) => article.user)
+  articles: ArticleEntity[];
+
+  @OneToMany(() => CommentEntity, (comment) => comment.user)
+  comments: CommentEntity[];
 }
