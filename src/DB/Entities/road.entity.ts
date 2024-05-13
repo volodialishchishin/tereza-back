@@ -15,6 +15,9 @@ export class RoadEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  title: string;
+
   @Column({ type: 'jsonb' })
   finish_mark: Location;
 

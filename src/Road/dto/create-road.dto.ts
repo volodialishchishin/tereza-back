@@ -14,4 +14,6 @@ export class CreateRoadDto {
   startMark: Location;
   @IsNotEmpty()
   waypoints: Location[];
+  @IsNotEmpty()
+  title: string;
 }

@@ -21,6 +21,7 @@ export class RoadService {
       finish_mark: createRoadDto.finishMark,
       start_mark: createRoadDto.startMark,
       waypoints: createRoadDto.waypoints,
+      title: createRoadDto.title,
     });
     const roadEntity = this.roadEntityRepository.save(road);
     return roadEntity;
@@ -37,6 +38,7 @@ export class RoadService {
         finishMark: road.finish_mark,
         startMark: road.start_mark,
         waypoints: road.waypoints,
+        title: road?.title,
       };
     });
   }

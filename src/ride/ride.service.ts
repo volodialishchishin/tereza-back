@@ -17,13 +17,16 @@ export class RideService {
     @InjectRepository(NotificationsEntity)
     private notificationRepository: Repository<NotificationsEntity>,
   ) {}
-  create(createRideDto: CreateRideDto) {
+  create(createRideDto: CreateRideDto, userId: string) {
+    // @ts-ignore
     const ride = this.rideEntityRepository.create({
       user_count: createRideDto.usersCount,
       description: createRideDto.description,
       title: createRideDto.title,
       road_id: createRideDto.roadId,
       date: createRideDto.date,
+      user_id: userId,
+      road: createRideDto.roadId,
     });
     const rideEntity = this.rideEntityRepository.save(ride);
     return rideEntity;
@@ -68,8 +71,8 @@ export class RideService {
     return `This action updates a #${id} ride`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} ride`;
+  remove(id: string) {
+    return this.rideEntityRepository.delete({ id });
   }
 
   async applyToRide({ id: user_id, username }: any, id: string) {
@@ -98,5 +101,13 @@ export class RideService {
       ride_id: id,
     });
     return subscriptions;
+  }
+
+  findAllForUser(userId: string) {
+    return this.rideEntityRepository
+      .createQueryBuilder('ride')
+      .where({ user_id: userId })
+      .orderBy('ride.createdat', 'DESC')
+      .getMany();
   }
 }

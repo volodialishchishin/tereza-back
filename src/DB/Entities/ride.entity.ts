@@ -19,7 +19,8 @@ export class RideEntity {
 
   @Column({ type: 'varchar' })
   title: string;
-
+  @Column({ type: 'varchar', nullable: true })
+  user_id: string;
   @Column({ type: 'varchar' })
   description: string;
   @CreateDateColumn({ type: 'varchar', nullable: true })
@@ -27,6 +28,8 @@ export class RideEntity {
   @Column({ type: 'varchar', nullable: true })
   date: string;
 
-  @ManyToOne(() => RoadEntity, (road) => road.rides)
+  @ManyToOne(() => RoadEntity, (road) => road.rides, {
+    onDelete: 'CASCADE',
+  })
   road: RoadEntity;
 }

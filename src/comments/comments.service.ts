@@ -13,7 +13,7 @@ export class CommentsService {
     private commentEntityRepository: Repository<CommentEntity>,
   ) {}
 
-  create(createCommentDto: CreateCommentDto, userId: string) {
+  async create(createCommentDto: CreateCommentDto, userId: string) {
     // @ts-ignore
     const comment = this.commentEntityRepository.create({
       text: createCommentDto.text,
@@ -21,7 +21,7 @@ export class CommentsService {
       // @ts-ignore
       user: userId,
     });
-    this.commentEntityRepository.save(comment);
+    await this.commentEntityRepository.save(comment);
 
     return comment;
   }
@@ -31,6 +31,7 @@ export class CommentsService {
       .createQueryBuilder('comment')
       .where({ article_id: id })
       .leftJoinAndSelect('comment.user', 'user')
+      .orderBy('comment.createdat', 'DESC')
       .getMany();
   }
 

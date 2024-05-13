@@ -50,8 +50,13 @@ export class ArticlesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.articlesService.findOne(id);
+  @UseGuards(JwtAuthGuard)
+  async findOne(@Param('id') id: string, @Req() request) {
+    const article = await this.articlesService.findOne(id);
+    return {
+      ...article,
+      canBeDeleted: article.user.id === request.user.userInfo.id,
+    };
   }
 
   @Patch(':id')
@@ -61,7 +66,7 @@ export class ArticlesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.articlesService.remove(+id);
+    return this.articlesService.remove(id);
   }
 
   @UseGuards(JwtAuthGuard)

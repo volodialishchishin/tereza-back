@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 import { UserEntity } from './user.entity';
 @Entity()
 export class CommentEntity {
@@ -13,4 +19,7 @@ export class CommentEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.comments)
   user: UserEntity;
+
+  @CreateDateColumn({ type: 'varchar', nullable: true })
+  createdat: string;
 }

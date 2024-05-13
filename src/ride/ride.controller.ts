@@ -21,9 +21,16 @@ export class RideController {
   constructor(private readonly rideService: RideService) {}
 
   @Post()
-  create(@Body() createRideDto: CreateRideDto) {
+  @UseGuards(JwtAuthGuard)
+  create(@Body() createRideDto: CreateRideDto, @Req() request) {
     console.log(createRideDto);
-    return this.rideService.create(createRideDto);
+    return this.rideService.create(createRideDto, request.user.userInfo.id);
+  }
+
+  @Get('user_owner')
+  @UseGuards(JwtAuthGuard)
+  findAllForOwner(@Req() request) {
+    return this.rideService.findAllForUser(request.user.userInfo.id);
   }
 
   @Get()
@@ -45,8 +52,12 @@ export class RideController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  findOne(@Param('id') id: string, @Req() request) {
-    return this.rideService.findOne(id, request.user.userInfo.id);
+  async findOne(@Param('id') id: string, @Req() request) {
+    const result = await this.rideService.findOne(id, request.user.userInfo.id);
+    return {
+      ...result,
+      canBeDeleted: result.user_id === request.user.userInfo.id,
+    };
   }
 
   @Patch(':id')
@@ -56,7 +67,7 @@ export class RideController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.rideService.remove(+id);
+    return this.rideService.remove(id);
   }
 
   @UseGuards(JwtAuthGuard)

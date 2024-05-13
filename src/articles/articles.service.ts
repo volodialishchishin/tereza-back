@@ -49,8 +49,9 @@ export class ArticlesService {
     return `This action updates a #${id} article`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} article`;
+  remove(id: string) {
+    console.log(id);
+    return this.articleRepository.delete({ id });
   }
 
   saveImage(id: any, url: string) {
